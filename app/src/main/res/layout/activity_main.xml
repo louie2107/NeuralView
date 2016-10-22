@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context="io.samlewis.neuralviewexample.MainActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <io.samlewis.neuralview.NeuralView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:groupOneColor="@android:color/holo_green_dark"
+        app:groupTwoColor="@android:color/holo_red_dark"
+        app:lineColor="@android:color/holo_blue_dark"
+        app:groupOneRadius="15"
+        app:groupTwoRadius="5"
+        app:count="10"
+        app:lineWidth="1"/>
+</RelativeLayout>
