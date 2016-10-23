@@ -17,8 +17,8 @@ public class NeuralView extends View {
     private Paint groupOnePaint = new Paint();
     private Paint groupTwoPaint = new Paint();
     private Paint linePaint = new Paint();
-    private int group1Radius;
-    private int group2Radius;
+    private int groupOneRadius;
+    private int groupTwoRadius;
     private int count;
     private int groupOneColor;
     private int groupTwoColor;
@@ -41,13 +41,13 @@ public class NeuralView extends View {
 
     protected void init(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.NeuralView, 0, 0);
-        group1Radius = ta.getInt(R.styleable.NeuralView_groupOneRadius, 20);
-        group2Radius = ta.getInt(R.styleable.NeuralView_groupTwoRadius, 30);
+        groupOneRadius = ta.getInt(R.styleable.NeuralView_groupOneRadius, 20);
+        groupTwoRadius = ta.getInt(R.styleable.NeuralView_groupTwoRadius, 30);
         count = ta.getInt(R.styleable.NeuralView_count, 10);
         lineWidth = ta.getInt(R.styleable.NeuralView_lineWidth, 1);
-        groupOneColor = ta.getColor(R.styleable.NeuralView_groupOneColor, Color.GREEN);
-        groupTwoColor = ta.getColor(R.styleable.NeuralView_groupTwoColor, Color.BLUE);
-        lineColor = ta.getColor(R.styleable.NeuralView_lineColor, Color.CYAN);
+        groupOneColor = ta.getColor(R.styleable.NeuralView_groupOneColor, Color.BLACK);
+        groupTwoColor = ta.getColor(R.styleable.NeuralView_groupTwoColor, Color.BLACK);
+        lineColor = ta.getColor(R.styleable.NeuralView_lineColor, Color.BLACK);
 
         ta.recycle();
 
@@ -77,8 +77,8 @@ public class NeuralView extends View {
         canvas.save();
 
         for(DirectedPoint point : groupOnePoints) {
-            boundCheck(point);
-            canvas.drawCircle(point.x, point.y, group2Radius, groupOnePaint);
+            boundCheck(point, groupOneRadius);
+            canvas.drawCircle(point.x, point.y, groupTwoRadius, groupOnePaint);
             if (groupOnePoints.indexOf(point)+1 == groupOnePoints.size()) {
                 canvas.drawLine(point.x, point.y, groupOnePoints.get(0).x, groupOnePoints.get(0).y, linePaint);
             } else {
@@ -87,8 +87,8 @@ public class NeuralView extends View {
         }
 
         for(DirectedPoint point : groupTwoPoints) {
-            boundCheck(point);
-            canvas.drawCircle(point.x, point.y, group1Radius, groupOnePaint);
+            boundCheck(point, groupTwoRadius);
+            canvas.drawCircle(point.x, point.y, groupOneRadius, groupOnePaint);
             if (groupTwoPoints.indexOf(point)+1 == groupTwoPoints.size()) {
                 canvas.drawLine(point.x, point.y, groupTwoPoints.get(0).x, groupTwoPoints.get(0).y, linePaint);
             } else {
@@ -100,10 +100,10 @@ public class NeuralView extends View {
         invalidate();
     }
 
-    private void boundCheck(DirectedPoint directedPoint) {
-        if(directedPoint.x <= 0) {
+    private void boundCheck(DirectedPoint directedPoint, int radius) {
+        if(directedPoint.x - radius <= 0) {
             directedPoint.xDirection = true;
-        } else if(directedPoint.x >= getWidth()) {
+        } else if(directedPoint.x + radius >= getWidth()) {
             directedPoint.xDirection = false;
         }
         if(directedPoint.xDirection) {
@@ -112,9 +112,9 @@ public class NeuralView extends View {
             directedPoint.x--;
         }
 
-        if(directedPoint.y <= 0) {
+        if(directedPoint.y - radius <= 0) {
             directedPoint.yDirection = true;
-        } else if(directedPoint.y >= getHeight()) {
+        } else if(directedPoint.y + radius >= getHeight()) {
             directedPoint.yDirection = false;
         }
         if(directedPoint.yDirection) {
